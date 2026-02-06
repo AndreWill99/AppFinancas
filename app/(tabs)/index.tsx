@@ -1,98 +1,129 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, ScrollView, View, Text } from 'react-native';
+import { Sidebar } from '../../components/sidebar'; 
+import { GraficoGastos } from '../../components/GraficoGastos';
+import { MetaCircular } from '@/components/metasCard';
+import { useResponsive } from '../../hooks/useResponsive';
+import { COLORS, SPACING, FONTS } from '../../constants/theme';
+import { CalendarioCard } from '../../components/CalendarioCard';
+import { GraficoMensal } from '../../components/GraficoMensal';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
 
-export default function HomeScreen() {
+const meusDados = [
+  { nome: 'Mercado', valor: 450, cor: COLORS.primary },
+  { nome: 'Lazer', valor: 200, cor: COLORS.accent },
+  { nome: 'Delivery', valor: 120, cor: '#A5B4FC' },
+];
+
+const dadosMensais = [
+  { mes: 'janeiro', valor: 1200 },
+  { mes: 'fevereiro', valor: 900 },
+  { mes: 'março', valor: 1100 },
+  { mes: 'abril', valor: 1800 }, // Destaque
+];
+
+export default function DashboardIndex() {
+  const { isMobile } = useResponsive();
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={styles.mainWrapper}>
+      {/* 1. Sidebar: Só aparece se NÃO for mobile */}
+      {!isMobile && <Sidebar />}
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        
+        {/* 2. Filtros de topo (Nós/Eu/Parceira) */}
+        <View style={styles.filterContainer}>
+          <View style={styles.filterTabActive}><Text style={styles.filterTextActive}>nós</Text></View>
+          <View style={styles.filterTab}><Text style={styles.filterText}>eu</Text></View>
+          <View style={styles.filterTab}><Text style={styles.filterText}>parceira</Text></View>
+        </View>
+
+        {/* 3. Área de Conteúdo Flexível (Grid) */}
+        <View style={[styles.grid, { flexDirection: isMobile ? 'column' : 'row' }]}>
+          
+          {/* COLUNA ESQUERDA: Gastos Totais e Metas */}
+          <View style={{ flex: 1, gap: SPACING.l }}>
+            
+            {/* Cartão de Gastos Totais */}
+            <View style={styles.summaryCard}>
+              <Text style={styles.summaryTitle}>Gastos totais:</Text>
+              <Text style={styles.summarySub}>este mês</Text>
+              <Text style={styles.summaryValue}>$000,00</Text>
+            </View>
+
+            {/* Secção de Metas */}
+            <View>
+              <Text style={styles.sectionTitle}>Metas</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 15 }}>
+                <MetaCircular titulo="viagem" valorAtual={450} valorAlvo={3000} />
+                <MetaCircular titulo="carro" valorAtual={8000} valorAlvo={20000} />
+                <MetaCircular titulo="casa" valorAtual={1500} valorAlvo={50000} cor={COLORS.accent} />
+              </ScrollView>
+            </View>
+          </View>
+
+          {/* COLUNA DIREITA: Gráfico */}
+          <View style={{ flex: isMobile ? 0 : 1.2, gap: SPACING.l }}>
+            <GraficoGastos dados={meusDados} />
+            
+            {/* Novo componente de Calendário */}
+            <CalendarioCard 
+              proximoPagamento="Internet/Netflix" 
+              data="Segunda, 10 de fevereiro" 
+            />
+          </View>
+          
+
+        </View>
+        <GraficoMensal dados={dadosMensais} />
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  mainWrapper: {
+    flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    backgroundColor: COLORS.background,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  container: {
+    flex: 1,
+    padding: SPACING.l,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  grid: {
+    gap: SPACING.l,
+  },
+  filterContainer: { 
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    marginBottom: SPACING.xl, 
+    gap: 10 
+  },
+  filterTabActive: { backgroundColor: COLORS.primary, paddingHorizontal: 25, paddingVertical: 8, borderRadius: 20 },
+  filterTab: { backgroundColor: '#EDE9FE', paddingHorizontal: 25, paddingVertical: 8, borderRadius: 20 },
+  filterTextActive: { color: '#FFF', fontWeight: '600' },
+  filterText: { color: COLORS.accent },
+  
+  summaryCard: { 
+    backgroundColor: COLORS.surface, 
+    padding: 30, 
+    borderRadius: SPACING.borderRadius, 
+    alignItems: 'center', 
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+  },
+  summaryTitle: { fontSize: 18, fontWeight: 'bold', color: COLORS.secondary },
+  summarySub: { color: COLORS.textSecondary, fontSize: 12, marginVertical: 5 },
+  summaryValue: { fontSize: 36, fontWeight: 'bold', color: COLORS.primary },
+  
+  sectionTitle: { 
+    fontSize: FONTS.sizeSection, 
+    fontWeight: 'bold', 
+    color: COLORS.secondary, 
+    marginBottom: 15 
   },
 });

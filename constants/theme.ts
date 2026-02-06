@@ -1,53 +1,36 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
-import { Platform } from 'react-native';
-
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
-
-export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-  },
+export const COLORS = {
+  // Cores principais do teu design
+  primary: '#6366F1',      // Roxo vibrante (botões e destaques)
+  secondary: '#4C1D95',    // Roxo escuro (títulos)
+  accent: '#818CF8',       // Roxo claro (barras e detalhes)
+  
+  // Cores de fundo e superfícies
+  background: '#F8F9FE',   // Fundo geral da app
+  surface: '#FFFFFF',      // Fundo dos cartões (cards)
+  
+  // Estados e Feedback
+  success: '#2ECC71',
+  error: '#EF4444',
+  
+  // Texto e Cinzas
+  textPrimary: '#1E1B4B',  // Quase preto/azul escuro
+  textSecondary: '#64748B', // Cinza para legendas
+  border: '#F1F5F9',
 };
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});
+export const SPACING = {
+  xs: 4,
+  s: 8,
+  m: 16,
+  l: 24,
+  xl: 32,
+  borderRadius: 24, // O estilo arredondado do teu design
+};
+
+export const FONTS = {
+  sizeTitle: 24,
+  sizeSection: 18,
+  sizeBody: 14,
+  weightBold: '700',
+  weightMedium: '500',
+};

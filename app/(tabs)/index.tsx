@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, ScrollView, View, Text } from 'react-native';
-import { Sidebar } from '../../components/sidebar'; 
 import { GraficoGastos } from '../../components/GraficoGastos';
 import { MetaCircular } from '@/components/metasCard';
 import { useResponsive } from '../../hooks/useResponsive';
 import { COLORS, SPACING, FONTS } from '../../constants/theme';
 import { CalendarioCard } from '../../components/CalendarioCard';
 import { GraficoMensal } from '../../components/GraficoMensal';
+import { TopNavbar } from '@/components/TopNavbar';
 
 
 const meusDados = [
@@ -25,20 +25,16 @@ const dadosMensais = [
 export default function DashboardIndex() {
   const { isMobile } = useResponsive();
 
+  const handleFilterChange = (filter: string) => {
+    console.log("Filtro selecionado:", filter);
+    // Aqui no futuro vamos filtrar os dados do gráfico!
+  };
+
   return (
     <View style={styles.mainWrapper}>
-      {/* 1. Sidebar: Só aparece se NÃO for mobile */}
-      {!isMobile && <Sidebar />}
-
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <TopNavbar onFilterChange={handleFilterChange} />
         
-        {/* 2. Filtros de topo (Nós/Eu/Parceira) */}
-        <View style={styles.filterContainer}>
-          <View style={styles.filterTabActive}><Text style={styles.filterTextActive}>nós</Text></View>
-          <View style={styles.filterTab}><Text style={styles.filterText}>eu</Text></View>
-          <View style={styles.filterTab}><Text style={styles.filterText}>parceira</Text></View>
-        </View>
-
         {/* 3. Área de Conteúdo Flexível (Grid) */}
         <View style={[styles.grid, { flexDirection: isMobile ? 'column' : 'row' }]}>
           

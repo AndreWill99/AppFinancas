@@ -4,9 +4,12 @@ import { View, StyleSheet, Platform } from 'react-native';
 import { Sidebar } from '../../components/sidebar';
 import { useResponsive } from '../../hooks/useResponsive';
 import { COLORS } from '../../constants/theme';
+import { Link } from 'expo-router';
+import { TabBarCustom } from '@/components/TabBarCustom';
+
 
 export default function TabLayout() {
-  const { isDesktop } = useResponsive();
+  const { isDesktop, isMobile } = useResponsive();
 
   return (
     <View style={styles.container}>
@@ -14,6 +17,7 @@ export default function TabLayout() {
       {isDesktop && <Sidebar />}
 
       <Tabs
+        tabBar={props => (isMobile ? <TabBarCustom {...props} /> : null)}
         screenOptions={{
           headerShown: false,
           // Se for Desktop, escondemos a barra de baixo (Tabs)

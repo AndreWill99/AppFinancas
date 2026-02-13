@@ -55,6 +55,10 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 24,
     width: '100%',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
   },
   title: {
     fontSize: 18,

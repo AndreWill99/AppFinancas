@@ -58,10 +58,16 @@ export function MetaCircular({ titulo, valorAtual, valorAlvo, cor = "#6366F1" }:
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#FFF',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 130,
+    borderRadius: '10%',
+    width: '100%',
     height: 130,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 15,
   },
   svg: {
     position: 'absolute',

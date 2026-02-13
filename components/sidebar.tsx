@@ -29,6 +29,10 @@ const styles = StyleSheet.create({
     borderRightColor: '#F1F5F9',
     padding: 20,
     height: '100%',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   btnAdicionar: {
     backgroundColor: '#6366F1',

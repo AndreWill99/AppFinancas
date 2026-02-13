@@ -10,7 +10,7 @@ interface CalendarioProps {
 export function CalendarioCard({ proximoPagamento, data }: CalendarioProps) {
   return (
     <View style={styles.card}>
-      <Text style={styles.headerTitle}>calendario</Text>
+      <Text style={styles.headerTitle}>Calendario</Text>
       
       <View style={styles.content}>
         <Text style={styles.label}>próximo pagamento</Text>
@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
   },
   headerTitle: {
-    color: COLORS.primary, // O azul/roxo do título 'calendario'
+    fontSize: 18,
     fontWeight: 'bold',
-    fontSize: 16,
-    marginBottom: 10,
+    color: COLORS.secondary,
+    marginBottom: 20,
   },
   content: {
     marginTop: 5,

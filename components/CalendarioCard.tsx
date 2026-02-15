@@ -10,7 +10,7 @@ interface CalendarioProps {
 export function CalendarioCard({ proximoPagamento, data }: CalendarioProps) {
   return (
     <View style={styles.card}>
-      <Text style={styles.headerTitle}>Calendario</Text>
+      <Text style={styles.headerTitle}>calendário</Text>
       
       <View style={styles.content}>
         <Text style={styles.label}>próximo pagamento</Text>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
+import { COLORS } from '../constants/theme';
 
 interface MetaProps {
   titulo: string;
@@ -9,28 +10,25 @@ interface MetaProps {
   cor?: string;
 }
 
-export function MetaCircular({ titulo, valorAtual, valorAlvo, cor = "#6366F1" }: MetaProps) {
+export function MetaCircular({ titulo, valorAtual, valorAlvo, cor = COLORS.primary }: MetaProps) {
   const tamanho = 120;
   const raio = 50;
   const circunferencia = 2 * Math.PI * raio;
-  
-  // Cálculo do preenchimento: quanto falta para 100%
+
   const percentagem = Math.min(valorAtual / valorAlvo, 1);
   const strokeDashoffset = circunferencia - (percentagem * circunferencia);
 
   return (
     <View style={styles.container}>
       <Svg width={tamanho} height={tamanho} style={styles.svg}>
-        {/* Círculo de Fundo */}
         <Circle
           cx={tamanho / 2}
           cy={tamanho / 2}
           r={raio}
-          stroke="#F1F5F9"
+          stroke={COLORS.border}
           strokeWidth="8"
           fill="transparent"
         />
-        {/* Círculo de Progresso */}
         <Circle
           cx={tamanho / 2}
           cy={tamanho / 2}
@@ -41,12 +39,11 @@ export function MetaCircular({ titulo, valorAtual, valorAlvo, cor = "#6366F1" }:
           strokeDasharray={circunferencia}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
-          rotation="-90" // Começa no topo
+          rotation="-90"
           origin={`${tamanho / 2}, ${tamanho / 2}`}
         />
       </Svg>
 
-      {/* Textos Centrais */}
       <View style={styles.textContainer}>
         <Text style={styles.titulo}>{titulo}</Text>
         <Text style={styles.valor}>$ {valorAtual.toLocaleString()}</Text>
@@ -58,11 +55,12 @@ export function MetaCircular({ titulo, valorAtual, valorAlvo, cor = "#6366F1" }:
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: COLORS.surface,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: '10%',
-    width: '100%',
+    borderRadius: 16,
+    flex: 1,
+    minWidth: 120,
     height: 130,
     elevation: 2,
     shadowColor: '#000',
@@ -77,16 +75,16 @@ const styles = StyleSheet.create({
   },
   titulo: {
     fontSize: 10,
-    color: '#94A3B8',
+    color: COLORS.textSecondary,
     textTransform: 'lowercase',
   },
   valor: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#1E1B4B',
+    color: COLORS.textPrimary,
   },
   alvo: {
     fontSize: 8,
-    color: '#CBD5E1',
+    color: COLORS.textSecondary,
   },
 });

@@ -1,6 +1,15 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import React from 'react';
+import { COLORS } from '../constants/theme';
+import {
+  DashboardIcon,
+  TargetIcon,
+  DocumentExtractIcon,
+  ProfileIcon,
+} from '@/components/icons/TabIcons';
+
+const ICON_SIZE = 24;
 
 export function Sidebar() {
   return (
@@ -12,10 +21,26 @@ export function Sidebar() {
       </Link>
 
       <View style={styles.menuItens}>
-        <Text style={[styles.item, styles.itemAtivo]}>📊 Dashboard</Text>
-        <Text style={styles.item}>📄 Extrato</Text>
-        <Text style={styles.item}>🎯 Metas</Text>
-        <Text style={styles.item}>👤 Perfil</Text>
+        <Link href="/(tabs)" asChild>
+          <TouchableOpacity style={styles.menuRow}>
+            <DashboardIcon size={ICON_SIZE} color={COLORS.primary} />
+            <Text style={[styles.item, styles.itemAtivo]}>Dashboard</Text>
+          </TouchableOpacity>
+        </Link>
+        <Link href="/(tabs)/extrato" asChild>
+          <TouchableOpacity style={styles.menuRow}>
+            <DocumentExtractIcon size={ICON_SIZE} color={COLORS.primary} />
+            <Text style={styles.item}>Extrato</Text>
+          </TouchableOpacity>
+        </Link>
+        <TouchableOpacity style={styles.menuRow}>
+          <TargetIcon size={ICON_SIZE} color={COLORS.primary} />
+          <Text style={styles.item}>Metas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuRow}>
+          <ProfileIcon size={ICON_SIZE} color={COLORS.primary} />
+          <Text style={styles.item}>Perfil</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -43,7 +68,12 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   btnTexto: { color: '#FFF', fontWeight: 'bold' },
-  menuItens: { gap: 25 },
-  item: { fontSize: 16, color: '#64748B', fontWeight: '500' },
-  itemAtivo: { color: '#4C1D95', fontWeight: 'bold' },
+  menuItens: { gap: 12 },
+  menuRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  item: { fontSize: 16, color: COLORS.textSecondary, fontWeight: '500' },
+  itemAtivo: { color: COLORS.secondary, fontWeight: 'bold' },
 });

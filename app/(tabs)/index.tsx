@@ -8,118 +8,163 @@ import { CalendarioCard } from '../../components/CalendarioCard';
 import { GraficoMensal } from '../../components/GraficoMensal';
 import { TopNavbar } from '@/components/TopNavbar';
 
-
 const meusDados = [
   { nome: 'Mercado', valor: 450, cor: COLORS.primary },
   { nome: 'Lazer', valor: 200, cor: COLORS.accent },
-  { nome: 'Delivery', valor: 120, cor: '#A5B4FC' },
+  { nome: 'delivery', valor: 120, cor: COLORS.accent },
 ];
 
 const dadosMensais = [
   { mes: 'janeiro', valor: 1200 },
   { mes: 'fevereiro', valor: 900 },
   { mes: 'março', valor: 1100 },
-  { mes: 'abril', valor: 1800 }, // Destaque
+  { mes: 'abril', valor: 1800 },
 ];
 
 export default function DashboardIndex() {
   const { isMobile } = useResponsive();
 
   const handleFilterChange = (filter: string) => {
-    console.log("Filtro selecionado:", filter);
-    // Aqui no futuro vamos filtrar os dados do gráfico!
+    console.log('Filtro selecionado:', filter);
   };
 
   return (
     <View style={styles.mainWrapper}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <TopNavbar onFilterChange={handleFilterChange} />
-        
-        {/* 3. Área de Conteúdo Flexível (Grid) */}
-        <View style={[styles.grid, { flexDirection: isMobile ? 'column' : 'row' }]}>
-          
-          {/* COLUNA ESQUERDA: Gastos Totais e Metas */}
-          <View style={{ flex: 1, gap: SPACING.l }}>
-            
-            {/* Cartão de Gastos Totais */}
+        <TopNavbar onFilterChange={handleFilterChange} showIcon={isMobile} />
+
+        {isMobile ? (
+          /* Mobile: coluna única — ordem Figma */
+          <View style={styles.mobileColumn}>
             <View style={styles.summaryCard}>
               <Text style={styles.summaryTitle}>Gastos totais:</Text>
               <Text style={styles.summarySub}>este mês</Text>
               <Text style={styles.summaryValue}>$000,00</Text>
             </View>
 
-            {/* Secção de Metas */}
+            <GraficoGastos dados={meusDados} />
+
+            <CalendarioCard
+              proximoPagamento="Internet/Netflix"
+              data="Segunda, 10 de fevereiro"
+            />
+
             <View>
               <Text style={styles.sectionTitle}>Metas</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 15 }}>
-                <MetaCircular titulo="viagem" valorAtual={450} valorAlvo={3000} />
+              <View style={styles.metasRow}>
+                <MetaCircular titulo="viagem" valorAtual={450} valorAlvo={5000} />
                 <MetaCircular titulo="carro" valorAtual={8000} valorAlvo={20000} />
-                <MetaCircular titulo="casa" valorAtual={1500} valorAlvo={50000} cor={COLORS.accent} />
-              </ScrollView>
+              </View>
             </View>
-          </View>
 
-          {/* COLUNA DIREITA: Gráfico */}
-          <View style={{ flex: isMobile ? 0 : 1.2, gap: SPACING.l }}>
-            <GraficoGastos dados={meusDados} />
-            
-            {/* Novo componente de Calendário */}
-            <CalendarioCard 
-              proximoPagamento="Internet/Netflix" 
-              data="Segunda, 10 de fevereiro" 
-            />
+            <GraficoMensal dados={dadosMensais} />
           </View>
-          
+        ) : (
+          /* Desktop: grid como no Figma */
+          <>
+            {/* Row 1: Gastos totais | Gráfico de gastos */}
+            <View style={styles.desktopRow}>
+              <View style={[styles.summaryCard, styles.summaryCardFlex]}>
+                <Text style={styles.summaryTitle}>Gastos totais:</Text>
+                <Text style={styles.summarySub}>este mês</Text>
+                <Text style={styles.summaryValue}>$000,00</Text>
+              </View>
+              <View style={styles.gridCell}>
+                <GraficoGastos dados={meusDados} />
+              </View>
+            </View>
 
-        </View>
-        <GraficoMensal dados={dadosMensais} />
+            {/* Row 2: Metas (2 cards) | Calendário */}
+            <View style={styles.desktopRow}>
+              <View style={styles.metasSection}>
+                <Text style={styles.sectionTitle}>Metas</Text>
+                <View style={styles.metasRow}>
+                  <MetaCircular titulo="viagem" valorAtual={450} valorAlvo={5000} />
+                  <MetaCircular titulo="carro" valorAtual={8000} valorAlvo={20000} />
+                </View>
+              </View>
+              <View style={styles.gridCell}>
+                <CalendarioCard
+                  proximoPagamento="Internet/Netflix"
+                  data="Segunda, 10 de fevereiro"
+                />
+              </View>
+            </View>
+
+            {/* Row 3: Gastos por mês (largura total) */}
+            <GraficoMensal dados={dadosMensais} />
+          </>
+        )}
       </ScrollView>
     </View>
   );
 }
 
+
+
 const styles = StyleSheet.create({
   mainWrapper: {
     flex: 1,
-    flexDirection: 'row',
     backgroundColor: COLORS.background,
   },
   container: {
     flex: 1,
     padding: SPACING.l,
   },
-  grid: {
+  mobileColumn: {
     gap: SPACING.l,
   },
-  filterContainer: { 
-    flexDirection: 'row', 
-    justifyContent: 'center', 
-    marginBottom: SPACING.xl, 
-    gap: 10 
+  desktopRow: {
+    flexDirection: 'row',
+    gap: SPACING.l,
+    marginBottom: SPACING.l,
   },
-  filterTabActive: { backgroundColor: COLORS.primary, paddingHorizontal: 25, paddingVertical: 8, borderRadius: 20 },
-  filterTab: { backgroundColor: '#EDE9FE', paddingHorizontal: 25, paddingVertical: 8, borderRadius: 20 },
-  filterTextActive: { color: '#FFF', fontWeight: '600' },
-  filterText: { color: COLORS.accent },
-  
-  summaryCard: { 
-    backgroundColor: COLORS.surface, 
-    padding: 30, 
-    borderRadius: SPACING.borderRadius, 
-    alignItems: 'center', 
+  gridCell: {
+    flex: 1,
+    minWidth: 0,
+  },
+  summaryCard: {
+    backgroundColor: COLORS.surface,
+    padding: 30,
+    borderRadius: SPACING.borderRadius,
+    alignItems: 'center',
     elevation: 2,
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 10,
   },
-  summaryTitle: { fontSize: 18, fontWeight: 'bold', color: COLORS.secondary },
-  summarySub: { color: COLORS.textSecondary, fontSize: 12, marginVertical: 5 },
-  summaryValue: { fontSize: 36, fontWeight: 'bold', color: COLORS.primary },
-  
-  sectionTitle: { 
-    fontSize: FONTS.sizeSection, 
-    fontWeight: 'bold', 
-    color: COLORS.secondary, 
-    marginBottom: 15 
+  summaryCardFlex: {
+    flex: 1,
+    minWidth: 0,
+  },
+  summaryTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: COLORS.secondary,
+  },
+  summarySub: {
+    color: COLORS.textSecondary,
+    fontSize: 12,
+    marginVertical: 5,
+  },
+  summaryValue: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: COLORS.primary,
+  },
+  sectionTitle: {
+    fontSize: FONTS.sizeSection,
+    fontWeight: 'bold',
+    color: COLORS.secondary,
+    marginBottom: 15,
+  },
+  metasSection: {
+    flex: 1,
+    minWidth: 0,
+  },
+  metasRow: {
+    flexDirection: 'row',
+    gap: SPACING.l,
+    flexWrap: 'wrap',
   },
 });

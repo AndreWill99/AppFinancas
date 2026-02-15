@@ -18,7 +18,13 @@ export default function RootLayout() {
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="cadastro" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+        <Stack.Screen 
+        name="modal" 
+        options={{ 
+          presentation: 'modal', // Mantém o comportamento de deslizar
+          headerShown: false,    // REMOVE A BARRA PRETA DO TOPO
+        }} 
+        />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

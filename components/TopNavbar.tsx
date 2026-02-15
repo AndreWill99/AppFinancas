@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING } from '../constants/theme';
 
 interface TopNavbarProps {
   onFilterChange?: (filter: string) => void;
+  showIcon?: boolean;
 }
 
-export function TopNavbar({ onFilterChange }: TopNavbarProps) {
-  // Estado para saber qual botão está ativo
+export function TopNavbar({ onFilterChange, showIcon }: TopNavbarProps) {
   const [activeTab, setActiveTab] = useState('nós');
 
   const handlePress = (tab: string) => {
@@ -19,6 +20,11 @@ export function TopNavbar({ onFilterChange }: TopNavbarProps) {
 
   return (
     <View style={styles.container}>
+      {showIcon && (
+        <View style={styles.iconWrapper}>
+          <Ionicons name="people-outline" size={28} color="#FFF" />
+        </View>
+      )}
       <View style={styles.navBg}>
         {tabs.map((tab) => {
           const isActive = activeTab === tab;
@@ -45,9 +51,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: SPACING.l,
   },
+  iconWrapper: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    backgroundColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: SPACING.m,
+  },
   navBg: {
     flexDirection: 'row',
-    backgroundColor: '#F1F5F9', // Um cinza bem claro para o fundo da barra
+    backgroundColor: COLORS.border,
     borderRadius: 30,
     padding: 4,
   },
@@ -66,12 +81,12 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   tabText: {
-    color: '#94A3B8', // Texto inativo (cinza)
+    color: COLORS.textSecondary,
     fontWeight: '500',
     fontSize: 14,
   },
   tabTextActive: {
-    color: '#FFFFFF', // Texto ativo (branco)
+    color: '#FFFFFF',
     fontWeight: 'bold',
   },
 });

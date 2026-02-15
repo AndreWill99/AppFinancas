@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { COLORS, SPACING } from '../constants/theme';
 
 interface Categoria {
   nome: string;
@@ -12,35 +13,33 @@ interface Props {
 }
 
 export function GraficoGastos({ dados }: Props) {
-  // Encontrar o valor máximo para escalar as barras
   const valorMaximo = Math.max(...dados.map(d => d.valor));
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Gráfico de gastos:</Text>
-      
+
       {dados.map((item, index) => {
-        // Cálculo da largura proporcional
-        const larguraProporcional = valorMaximo > 0 
-          ? (item.valor / valorMaximo) * 100 
+        const larguraProporcional = valorMaximo > 0
+          ? (item.valor / valorMaximo) * 100
           : 0;
 
         return (
           <View key={index} style={styles.row}>
             <Text style={styles.label}>{item.nome}</Text>
-            
+
             <View style={styles.barBackground}>
-              <View 
+              <View
                 style={[
-                  styles.barFill, 
-                  { 
-                    width: `${larguraProporcional}%`, 
-                    backgroundColor: item.cor 
-                  }
-                ]} 
+                  styles.barFill,
+                  {
+                    width: `${larguraProporcional}%`,
+                    backgroundColor: item.cor,
+                  },
+                ]}
               />
             </View>
-            
+
             <Text style={styles.value}>${item.valor.toFixed(2)}</Text>
           </View>
         );
@@ -51,9 +50,9 @@ export function GraficoGastos({ dados }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: COLORS.surface,
     padding: 20,
-    borderRadius: 24,
+    borderRadius: SPACING.borderRadius,
     width: '100%',
     elevation: 2,
     shadowColor: '#000',
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#1E1B4B',
+    color: COLORS.secondary,
     marginBottom: 20,
   },
   row: {
@@ -75,13 +74,13 @@ const styles = StyleSheet.create({
   label: {
     width: 70,
     fontSize: 12,
-    color: '#64748B',
+    color: COLORS.textSecondary,
     fontWeight: '500',
   },
   barBackground: {
     flex: 1,
     height: 10,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: COLORS.border,
     borderRadius: 5,
     overflow: 'hidden',
   },
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
     width: 60,
     fontSize: 12,
     textAlign: 'right',
-    color: '#1E1B4B',
+    color: COLORS.textPrimary,
     fontWeight: '600',
   },
 });
